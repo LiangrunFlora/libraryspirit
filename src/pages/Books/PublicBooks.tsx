@@ -1,8 +1,4 @@
-
 import * as React from 'react';
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
-import ImageListItemBar from '@mui/material/ImageListItemBar';
 import {useNavigate} from "react-router";
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -21,40 +17,42 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import Divider from '@mui/material/Divider';
+import {useMutation} from "@tanstack/react-query";
+import getAllBooks from "../../apis/queryFn/getAllBooks";
+import toast from "react-hot-toast";
+import {useEffect, useState} from "react";
+import getBooksByCategory from "../../apis/queryFn/getBooksByCategory";
 
 
 const categoryList = ['文学类', '自然科学类', '工学类', '经济类', '历史地理类']
 // 测试数据
-const itemData:Books[] = [
+const itemData: Books[] = [
   {
     bookId: 1,
-    bookImage: "https://images.unsplash.com/photo-1589118949245-7d38baf380d6",
+    cover: "https://images.unsplash.com/photo-1589118949245-7d38baf380d6",
     bookName: "Book One",
     author: "Author One",
     category: "Fiction",
-    location: "Shelf A",
     introduction: "This is the introduction of Book One.",
     press: "Publisher One",
     stars: 4,
   },
   {
     bookId: 2,
-    bookImage: "https://images.unsplash.com/photo-1471357674240-e1a485acb3e1",
+    cover: "https://images.unsplash.com/photo-1471357674240-e1a485acb3e1",
     bookName: "Book Two",
     author: "Author Two",
     category: "Science",
-    location: "Shelf B",
     introduction: "This is the introduction of Book Two.",
     press: "Publisher Two",
     stars: 5,
   },
   {
     bookId: 3,
-    bookImage: "https://images.unsplash.com/photo-1567306301408-9b74779a11af",
+    cover: "https://images.unsplash.com/photo-1567306301408-9b74779a11af",
     bookName: "Book Three",
     author: "Author Three",
     category: "History",
-    location: "Shelf C",
     introduction: "This is the introduction of Book Three.",
     press: "Publisher Three",
     stars: 3,
@@ -62,28 +60,74 @@ const itemData:Books[] = [
 ];
 
 interface MediaCardProps {
-  item:Books;
+  item: Books;
 }
 
-const PublicBooks = ()=>{
+const PublicBooks = () => {
+
+  const [bookData, setBookData] = useState<Books[]>([])
 
   const navigate = useNavigate()
 
-  const onBookClickHandle = (item:Books) => {
+  const onBookClickHandle = (item: Books) => {
     return () => {
       // 在这里处理点击事件，并访问传递的参数 item
       console.log("Clicked book:", item);
       // 使用编程式导航进行页面跳转，并将item作为参数传递
-      navigate(`/bookDetails`, { state: { bookDetailData: item } });
+      navigate(`/bookDetails`, {state: {bookDetailData: item}});
     };
   };
 
-  const MediaCard: React.FC<MediaCardProps> = ({item}) =>{
+  const {mutate: getPublicBooks} = useMutation({
+    mutationFn: getAllBooks,
+    onSuccess: (data) => {
+      if (data.code === 20014) {
+        toast.dismiss();
+        toast.success(<b>获取全部图书成功！</b>)
+        console.log(data.data)
+        setBookData(data.data as Books[])
+      }
+    },
+    onError: (error) => {
+      toast.error(<b>获取图书列表失败</b>)
+      // console.log(error)
+    }
+  })
+
+  const {mutate: getCategoryBooks} = useMutation({
+    mutationFn: getBooksByCategory,
+    onSuccess: (data) => {
+      if (data.code === 20014) {
+        toast.dismiss();
+        toast.success(<b>获取图书成功！</b>)
+        console.log(data.data)
+        setBookData(data.data as Books[])
+      }
+    },
+    onError: (error) => {
+      toast.error(<b>获取对应种类图书失败</b>)
+    }
+  })
+
+  useEffect(() => {
+    getPublicBooks();
+  }, [])
+
+
+  const handleCategoryClick = (category:string) => {
+    return () => {
+      console.log(category)
+      getCategoryBooks(category);
+    }
+  }
+
+  // 具体图书Card
+  const MediaCard: React.FC<MediaCardProps> = ({item}) => {
     return (
-      <Card sx={{ maxWidth: 345 }}>
+      <Card sx={{maxWidth: 350, height:320}}>
         <CardMedia
-          sx={{ height: 140 }}
-          image={item.bookImage}
+          sx={{height: 140}}
+          image={item.cover}
           title={item.bookName}
         />
         <CardContent>
@@ -108,34 +152,40 @@ const PublicBooks = ()=>{
     setOpen(newOpen);
   };
 
+  function bookchunk(array:Books[], size:number) {
+    return Array.from({ length: Math.ceil(array.length / size) }, (_, index) =>
+      array.slice(index * size, index * size + size)
+    );
+  }
+
   const DrawerList = (
-    <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+    <Box sx={{width: 250}} role="presentation" onClick={toggleDrawer(false)}>
       <List>
         {categoryList.map((text, index) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton>
+            <ListItemButton onClick={handleCategoryClick(text)}>
               <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                {index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}
               </ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText primary={text}/>
             </ListItemButton>
           </ListItem>
         ))}
       </List>
-      <Divider />
+      <Divider/>
       <List>
         <ListItem>
           <ListItemButton>
-            <ListItemText primary="个人图书馆" />
+            <ListItemText primary="个人图书馆"/>
           </ListItemButton>
         </ListItem>
         {['学习笔记', '课程资料', '更多'].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton>
               <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                {index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}
               </ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText primary={text}/>
             </ListItemButton>
           </ListItem>
         ))}
@@ -156,7 +206,7 @@ const PublicBooks = ()=>{
         }}
       >
         <Card sx={{padding: 3}}>
-          <Box sx={{ display: 'flex',justifyContent: 'center', alignItems: 'center', }}>
+          <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center',}}>
             <h2>选择你喜爱的好书！</h2>
           </Box>
 
@@ -171,15 +221,23 @@ const PublicBooks = ()=>{
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            padding:3
+            padding: 3
           }}>
-            <Grid container spacing={{xs: 2, md: 3}} columns={{xs: 4, sm: 8, md: 12}}>
-              {Array.from(Array(6)).map((_, index) => (
-                <Grid item xs={2} sm={4} md={4} key={index}>
-                  {/*todo:itemData 查询图书数据*/}
-                  {itemData.map((item) => (
-                    <MediaCard item={item}/>
-                  ))}
+            <Grid container spacing={2}>
+              {bookchunk(bookData, 3).map((row, rowIndex) => (
+                <Grid item xs={12} key={rowIndex}>
+                  <Grid container spacing={2}>
+                    {row.map((item, itemIndex) => (
+                      <Grid item xs={4} key={itemIndex}>
+                        <MediaCard item={item}/>
+                      </Grid>
+                    ))}
+                    {row.length < 3 && (
+                      <Grid item xs={4} key="placeholder">
+                        {/* 这里可以放置一个占位的空白组件 */}
+                      </Grid>
+                    )}
+                  </Grid>
                 </Grid>
               ))}
             </Grid>

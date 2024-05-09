@@ -7,6 +7,15 @@ import SmartChats from "../pages/SmartChats/SmartChats";
 import SmartService from "../pages/SmartService/SmartService";
 import BookDetails from "../pages/Books/BookDetails";
 import RankingList from "../pages/Recommand/RankingList";
+import Login from "../pages/Login/login";
+import Personal from "../pages/PersonalCenter/Personal";
+import PersonalInformation from "../pages/PersonalCenter/components/Information/PersonalInformation";
+import BookCirculate from "../pages/PersonalCenter/components/BookCirculate/BookCirculate";
+import BookHistory from "../pages/PersonalCenter/components/BookHistory/BookHistory";
+import Announcement from "../pages/PersonalCenter/components/Announcement/Announcement";
+import MyMail from "../pages/PersonalCenter/components/MyMail/MyMail";
+import MyResources from "../pages/PersonalCenter/components/MyResources/MyResources";
+import UploadResource from "../pages/PersonalCenter/components/UploadResources/UploadResource";
 
 const router = createBrowserRouter([
   {
@@ -34,15 +43,56 @@ const router = createBrowserRouter([
         element:<SmartService/>
       },
       {
-        path:"rankingList",
-        element:<RankingList/>
-      }
-    ]
+        path: "rankingList",
+        element: <RankingList/>
+      },
+      {
+        path:"/personal",
+        element:<Personal></Personal>,
+        children:[
+          {
+            path:'',
+            element:<PersonalInformation></PersonalInformation>
+          },
+          {
+            path:'information',
+            element:<PersonalInformation></PersonalInformation>
+          },
+          {
+            path:'mail',
+            element:<MyMail></MyMail>
+          },
+          {
+            path:'circulate',
+            element:<BookCirculate></BookCirculate>
+          },
+          {
+            path:'record',
+            element:<BookHistory></BookHistory>
+          },
+          {
+            path:'myResources',
+            element:<MyResources></MyResources>
+          },
+          {
+            path:'upload',
+            element:<UploadResource></UploadResource>
+          },
+          {
+            path:'announcement',
+            element:<Announcement></Announcement>
+          }
+        ]
+      }]
+  },
+  {
+    path:"/login",
+    element:<Login/>
   },
   {
     path:"*",
     element:<NotFound/>
-  },
+  }
   ])
 
 

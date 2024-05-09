@@ -4,28 +4,14 @@ import Typography from "@mui/material/Typography";
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import {useLocation} from "react-router-dom";
-import {
-  Alert,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Grid,
-  Slide,
-  Stack
-} from "@mui/material";
+import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Slide, Stack} from "@mui/material";
 import Stars from "./Stars";
 import Button from "@mui/material/Button";
 import CommandList from "./CommandList";
 import React, {useState} from "react";
 import {TransitionProps} from "@mui/material/transitions";
-import CheckIcon from '@mui/icons-material/Check';
 import toast from "react-hot-toast";
 import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemButton from "@mui/material/ListItemButton";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
@@ -81,7 +67,7 @@ const BookDetails = () => {
   return (
     <>
       <React.Fragment>
-        <Box sx={{paddingTop:3, paddingLeft:3}}>
+        <Box sx={{paddingTop: 3, paddingLeft: 3}}>
           <div role="presentation" onClick={handleClick}>
             <Breadcrumbs aria-label="breadcrumb">
               <Link underline="hover" color="inherit" href="/">
@@ -110,8 +96,8 @@ const BookDetails = () => {
             <Grid container rowSpacing={1} columnSpacing={{xs: 1}} sx={{padding: 3}}>
               <Grid item xs={4}>
                 <img
-                  srcSet={`${bookDetailData.bookImage}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                  src={`${bookDetailData.bookImage}?w=164&h=164&fit=crop&auto=format`}
+                  srcSet={`${bookDetailData.cover}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                  src={`${bookDetailData.cover}?w=164&h=164&fit=crop&auto=format`}
                   alt={bookDetailData.bookName}
                   loading="lazy"
                 />
@@ -187,16 +173,6 @@ const BookDetails = () => {
                       <Typography color="color.secondary">
                         {bookDetailData.introduction}
                       </Typography>
-                      {/*<ListItemButton>*/}
-                      {/*  <ListItemText primary="Phone ringtone" secondary="Titania"/>*/}
-                      {/*</ListItemButton>*/}
-                      {/*<Divider/>*/}
-                      {/*<ListItemButton>*/}
-                      {/*  <ListItemText*/}
-                      {/*    primary="Default notification ringtone"*/}
-                      {/*    secondary="Tethys"*/}
-                      {/*  />*/}
-                      {/*</ListItemButton>*/}
                     </List>
                   </Dialog>
 
