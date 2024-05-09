@@ -1,6 +1,12 @@
 import { createBrowserRouter } from "react-router-dom";
 import NotFound from "../pages/Error/notFound";
 import Start from "../pages/Home/Start";
+import PublicBooks from "../pages/Books/PublicBooks";
+import Information from "../pages/Information/Information";
+import SmartChats from "../pages/SmartChats/SmartChats";
+import SmartService from "../pages/SmartService/SmartService";
+import BookDetails from "../pages/Books/BookDetails";
+import RankingList from "../pages/Recommand/RankingList";
 import Login from "../pages/Login/login";
 import Personal from "../pages/PersonalCenter/Personal";
 import PersonalInformation from "../pages/PersonalCenter/components/Information/PersonalInformation";
@@ -15,53 +21,74 @@ import OtherResources from "../pages/PersonalCenter/components/OtherResources/Ot
 const router = createBrowserRouter([
   {
     path:"/",
-    element:<Start/>
+    element:<Start/>,
+    children:[
+      {
+        path:"publicBooks",
+        element:<PublicBooks/>
+      },
+      {
+        path:"bookDetails",
+        element:<BookDetails/>
+      },
+      {
+        path:"information",
+        element:<Information/>
+      },
+      {
+        path:"smartChats",
+        element:<SmartChats/>
+      },
+      {
+        path:"smartServices",
+        element:<SmartService/>
+      },
+      {
+        path: "rankingList",
+        element: <RankingList/>
+      },
+      {
+        path:"/personal",
+        element:<Personal></Personal>,
+        children:[
+          {
+            path:'',
+            element:<PersonalInformation></PersonalInformation>
+          },
+          {
+            path:'information',
+            element:<PersonalInformation></PersonalInformation>
+          },
+          {
+            path:'ask',
+            element:<MyAsk></MyAsk>
+          },
+          {
+            path:'circulate',
+            element:<BookCirculate></BookCirculate>
+          },
+          {
+            path:'record',
+            element:<BookHistory></BookHistory>
+          },
+          {
+            path:'myResources',
+            element:<MyResources></MyResources>
+          },
+          {
+            path:'upload',
+            element:<UploadResource></UploadResource>
+          },
+          {
+            path:'announcement',
+            element:<Announcement></Announcement>
+          }
+        ]
+      }]
   },
   {
     path:"/login",
     element:<Login/>
-  },
-  {
-    path:"/personal",
-    element:<Personal></Personal>,
-    children:[
-      {
-        path:'',
-        element:<PersonalInformation></PersonalInformation>
-      },
-      {
-        path:'information',
-        element:<PersonalInformation></PersonalInformation>
-      },
-      {
-        path:'ask',
-        element:<MyAsk></MyAsk>
-      },
-      {
-        path:'circulate',
-        element:<BookCirculate></BookCirculate>
-      },
-      {
-        path:'record',
-        element:<BookHistory></BookHistory>
-      },
-      {
-        path:'myResources',
-        element:<MyResources></MyResources>
-      },
-      {
-        path:'otherResources',
-        element:<OtherResources></OtherResources>
-      },
-      {
-        path:'upload',
-        element:<UploadResource></UploadResource>
-      },
-      {
-        path:'announcement',
-        element:<Announcement></Announcement>
-      }
-    ]
   },
   {
     path:"*",
