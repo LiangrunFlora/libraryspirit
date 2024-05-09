@@ -1,0 +1,76 @@
+
+.container{
+    position: relative;
+}
+
+
+.box {
+    width: 70%;
+    height: 100%;
+    margin: auto; /* 水平居中 */
+    padding-top: 5%;
+}
+
+.inputText{
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.announcement-container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #b1d1e9; 
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    .title{
+        display: flex;
+        margin-bottom: 18px;  
+
+        h2 {
+        font-size: 1.5rem; 
+        font-weight: bold;
+        margin-left: 40%;
+        }
+
+        .consult{
+            margin-left: 20%;
+        }
+    }
+}
+  
+.announcement-list {
+    list-style-type: none;
+    padding: 0;
+}
+  
+.announcement-item {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #fff; 
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+    
+    &:hover {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    .announcement-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #333;
+    }
+    
+    .announcement-content {
+        margin-top: 10px;
+        color: #666;
+    }
+    
+    .announcement-time {
+        margin-top: 10px;
+        font-size: 0.8rem;
+        color: #999;
+    }
+}
