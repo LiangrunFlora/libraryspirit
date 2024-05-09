@@ -12,7 +12,8 @@ import {
   FacebookOutlined,
   UploadOutlined,
   BellOutlined,
-  AlertOutlined
+  AlertOutlined,
+  RadarChartOutlined
 } from '@ant-design/icons';
 import { Outlet, useNavigate,useLocation } from "react-router-dom";
 import './Personal.scss'
@@ -51,7 +52,7 @@ const Personal: React.FC = () => {
                     }
                 >
                     <Menu.Item key="information"><span><SolutionOutlined /></span>个人信息</Menu.Item>
-                    <Menu.Item key="mail"><span><MailOutlined /></span>我的消息</Menu.Item>
+                    <Menu.Item key="ask"><span><MailOutlined /></span>借阅申请</Menu.Item>
                 </SubMenu>
                 <SubMenu
                     key="sub2"
@@ -75,6 +76,7 @@ const Personal: React.FC = () => {
                     }
                 >
                     <Menu.Item key="myResources"><span><FacebookOutlined /></span>我的图书</Menu.Item>
+                    <Menu.Item key="otherResources"><span><RadarChartOutlined /></span>个人图书馆借阅情况</Menu.Item>
                     <Menu.Item key="upload"><span><UploadOutlined /></span>上传图书</Menu.Item>
                 </SubMenu>
                 <SubMenu

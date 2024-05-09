@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './Announcement.scss';
 import { Button,Modal,message,Input } from 'antd';
 import { CommentOutlined } from '@ant-design/icons';
+
 type AnnouncementData = {
   id: number,
   title: string,

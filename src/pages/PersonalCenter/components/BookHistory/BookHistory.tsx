@@ -5,6 +5,7 @@ import './BookHistory.scss'
 
 type TableData ={
   bookId:number,
+  cover:string,
   bookName:string,
   author:string,
   category:string,
@@ -15,6 +16,7 @@ type TableData ={
 const tableData: TableData[] = [
     {
       bookId: 1,
+      cover:"https://img0.baidu.com/it/u=4085765120,772646386&fm=253&fmt=auto&app=138&f=JPEG?w=809&h=500",
       bookName: "The Great Gatsby",
       author: "F. Scott Fitzgerald",
       category: "Fiction",
@@ -23,6 +25,7 @@ const tableData: TableData[] = [
     },
     {
       bookId: 2,
+      cover:"https://img0.baidu.com/it/u=4085765120,772646386&fm=253&fmt=auto&app=138&f=JPEG?w=809&h=500",
       bookName: "To Kill a Mockingbird",
       author: "Harper Lee",
       category: "Fiction",
@@ -31,6 +34,7 @@ const tableData: TableData[] = [
     },
     {
       bookId: 3,
+      cover:"https://img0.baidu.com/it/u=4085765120,772646386&fm=253&fmt=auto&app=138&f=JPEG?w=809&h=500",
       bookName: "1984",
       author: "George Orwell",
       category: "Science Fiction",
@@ -39,6 +43,7 @@ const tableData: TableData[] = [
     },
     {
       bookId: 4,
+      cover:"https://img0.baidu.com/it/u=4085765120,772646386&fm=253&fmt=auto&app=138&f=JPEG?w=809&h=500",
       bookName: "Pride and Prejudice",
       author: "Jane Austen",
       category: "Classic",
@@ -47,6 +52,7 @@ const tableData: TableData[] = [
     },
     {
       bookId: 5,
+      cover:"https://img0.baidu.com/it/u=4085765120,772646386&fm=253&fmt=auto&app=138&f=JPEG?w=809&h=500",
       bookName: "The Catcher in the Rye",
       author: "J. D. Salinger",
       category: "Fiction",
@@ -63,6 +69,11 @@ const BookHistory:React.FC = () => {
      {
         title: '书号',
         dataIndex: 'bookId'
+      },
+      {
+        title:'封面',
+        dataIndex:'cover',
+        render: (coverUrl: string) => <img src={coverUrl} alt="封面" style={{ width: '100px', height: 'auto' }} />
       },
       {
         title: '书名',
@@ -88,21 +99,20 @@ const BookHistory:React.FC = () => {
         title: '操作',
         render: (record: TableData) => (
           <Space size="middle">
-            <Popconfirm
-              title="删除记录"
-              description="确认删除？"
-              onConfirm={() => handleDelete(record)}
-              okText="Yes"
-              cancelText="No"
-            >
-            <Button 
-              type="primary" 
-              shape="circle" 
-              size='large'
-              style={{ backgroundColor: 'bisque' }}
-              icon={<CloseOutlined />} 
-            />
-            </Popconfirm>
+              <Popconfirm
+                title="删除记录"
+                description="确认删除记录？"
+                onConfirm={() => handleDelete(record)}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Button 
+                  type="primary" 
+                  style={{ backgroundColor: 'lemonchiffon' }}
+                >
+                删除记录
+                </Button>
+              </Popconfirm>
           </Space>
         )
       }

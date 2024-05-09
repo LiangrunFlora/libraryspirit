@@ -7,9 +7,10 @@ import PersonalInformation from "../pages/PersonalCenter/components/Information/
 import BookCirculate from "../pages/PersonalCenter/components/BookCirculate/BookCirculate";
 import BookHistory from "../pages/PersonalCenter/components/BookHistory/BookHistory";
 import Announcement from "../pages/PersonalCenter/components/Announcement/Announcement";
-import MyMail from "../pages/PersonalCenter/components/MyMail/MyMail";
+import MyAsk from "../pages/PersonalCenter/components/MyAsk/MyAsk";
 import MyResources from "../pages/PersonalCenter/components/MyResources/MyResources";
 import UploadResource from "../pages/PersonalCenter/components/UploadResources/UploadResource";
+import OtherResources from "../pages/PersonalCenter/components/OtherResources/OtherResources";
 
 const router = createBrowserRouter([
   {
@@ -33,8 +34,8 @@ const router = createBrowserRouter([
         element:<PersonalInformation></PersonalInformation>
       },
       {
-        path:'mail',
-        element:<MyMail></MyMail>
+        path:'ask',
+        element:<MyAsk></MyAsk>
       },
       {
         path:'circulate',
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
       {
         path:'myResources',
         element:<MyResources></MyResources>
+      },
+      {
+        path:'otherResources',
+        element:<OtherResources></OtherResources>
       },
       {
         path:'upload',
