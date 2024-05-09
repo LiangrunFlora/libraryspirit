@@ -1,0 +1,121 @@
+import React,{ useState ,useEffect} from 'react';
+import { Table, Tag, Space, Button, Popconfirm, Card,message } from 'antd';
+import { EditOutlined, ClockCircleOutlined,CloseOutlined} from '@ant-design/icons';
+import './MyResources.scss'
+
+type TableData ={
+  bookId:number,
+  bookName:string,
+  author:string,
+  category:string,
+  press:string,
+  status:number
+}
+
+const tableData: TableData[] = [
+{ bookId: 1, bookName: "The Great Gatsby", author: "F. Scott Fitzgerald", category: "Fiction", press: "Scribner", status: 0 },
+{ bookId: 2, bookName: "To Kill a Mockingbird", author: "Harper Lee", category: "Fiction", press: "J. B. Lippincott & Co.", status: 1 },
+{ bookId: 3, bookName: "1984", author: "George Orwell", category: "Fiction", press: "Secker & Warburg", status: 1 },
+{ bookId: 4, bookName: "Pride and Prejudice", author: "Jane Austen", category: "Fiction", press: "T. Egerton, Whitehall", status: 2 },
+{ bookId: 5, bookName: "The Catcher in the Rye", author: "J. D. Salinger", category: "Fiction", press: "Little, Brown and Company", status: 1 }
+];
+
+const MyResources:React.FC = () => {
+
+    const [myResources, setMyResources] = useState<TableData[]>(tableData);
+
+    const status = {
+        0: <Tag color='volcano'>审核中~</Tag>,
+        1: <Tag color='green'>已上架~</Tag>,
+        2: <Tag color='geekblue'>已借出~</Tag>
+      } as Record<string, JSX.Element>;
+  
+    const columns = [
+       {
+          title: '书号',
+          dataIndex: 'bookId'
+        },
+        {
+          title: '书名',
+          dataIndex: 'bookName'
+        },
+        {
+          title:'作者',
+          dataIndex: 'author'
+        },
+        {
+          title: '类型',
+          dataIndex: 'category'
+        },
+        {
+          title: '出版社',
+          dataIndex: 'press'
+        },
+        {
+          title: '状态',
+          dataIndex: 'status',
+          render: (data:number) => status[data]
+        },
+        {
+          title: '操作',
+          render: (record: TableData) => (
+            <Space size="middle">
+            {record.status === 0 && (
+              <Popconfirm
+                title="取消上传"
+                description="确认取消上传？"
+                onConfirm={() => handleDelete(record)}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Button 
+                  type="primary" 
+                  style={{ backgroundColor: 'lemonchiffon' }}
+                >
+                取消上传
+                </Button>
+              </Popconfirm>
+            )}
+            {record.status === 1 && (
+              <Popconfirm
+                title="申请下架"
+                description="确认申请下架？"
+                onConfirm={() => handleTakeDown(record)}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Button 
+                  type="primary" 
+                  style={{ backgroundColor: 'bisque' }}
+                >
+                    申请下架
+                </Button>
+              </Popconfirm>
+            )}
+          </Space>
+          )
+        }
+    ]
+  
+    const handleDelete = (record:TableData) => {
+      const updatedData = tableData.filter(order => {
+          return order.bookId !== record.bookId;
+      });
+      setMyResources(updatedData)
+    };
+
+    const handleTakeDown = (record:TableData) => {
+        
+    };
+  
+
+    return (
+      <div>
+        <Card title={`您截止现在已经与大家分享了${tableData.length}本书`}>
+          <Table rowKey={'bookId'} columns={columns} dataSource={myResources} />
+        </Card>
+      </div>
+    );
+  };
+  
+  export default MyResources
