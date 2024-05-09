@@ -76,6 +76,10 @@ const router = createBrowserRouter([
             element:<MyResources></MyResources>
           },
           {
+            path:'otherResources',
+            element:<OtherResources></OtherResources>
+          },
+          {
             path:'upload',
             element:<UploadResource></UploadResource>
           },
