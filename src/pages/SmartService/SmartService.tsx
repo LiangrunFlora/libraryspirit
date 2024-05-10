@@ -1,11 +1,15 @@
 import WordClouds from "./WordClouds";
 import FindLocation from "./FindLocation";
+import MenuService from "./MenuService";
+import {Outlet} from "react-router-dom";
 
 const SmartService = ()=>{
   return (
     <>
-      <FindLocation/>
-      <WordClouds/>
+      <MenuService/>
+      <Outlet/>
+      {/*<FindLocation/>*/}
+      {/*<WordClouds/>*/}
     </>
   )
 }

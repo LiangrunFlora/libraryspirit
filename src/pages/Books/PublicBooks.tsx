@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import List from "@mui/material/List";
 import Box from "@mui/material/Box";
-import {Grid} from "@mui/material";
+import {Fab, Grid} from "@mui/material";
 import Drawer from "@mui/material/Drawer";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from '@mui/material/ListItemButton';
@@ -22,6 +22,7 @@ import getAllBooks from "../../apis/queryFn/getAllBooks";
 import toast from "react-hot-toast";
 import {useEffect, useState} from "react";
 import getBooksByCategory from "../../apis/queryFn/getBooksByCategory";
+import AddIcon from "@mui/icons-material/Add";
 
 
 const categoryList = ['文学类', '自然科学类', '工学类', '经济类', '历史地理类']
@@ -240,9 +241,22 @@ const PublicBooks = () => {
                   </Grid>
                 </Grid>
               ))}
+
             </Grid>
           </Box>
         </Card>
+      </Box>
+      <Box
+        sx={{
+          position: 'fixed',
+          bottom: '20px',
+          right: '20px',
+          zIndex: 1000, // 确保 FAB 在其他内容之上
+        }}
+      >
+        <Fab color="primary" aria-label="add">
+          <AddIcon />
+        </Fab>
       </Box>
     </>
   )

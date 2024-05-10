@@ -17,12 +17,20 @@ import MyAsk from "../pages/PersonalCenter/components/MyAsk/MyAsk";
 import MyResources from "../pages/PersonalCenter/components/MyResources/MyResources";
 import UploadResource from "../pages/PersonalCenter/components/UploadResources/UploadResource";
 import OtherResources from "../pages/PersonalCenter/components/OtherResources/OtherResources";
+import FindLocation from "../pages/SmartService/FindLocation";
+import WordClouds from "../pages/SmartService/WordClouds";
+import AudioBooks from "../pages/SmartService/AudioBooks";
+import HomePage from "../pages/Home/HomePage";
 
 const router = createBrowserRouter([
   {
     path:"/",
     element:<Start/>,
     children:[
+      {
+        path:"home",
+        element:<HomePage/>
+      },
       {
         path:"publicBooks",
         element:<PublicBooks/>
@@ -41,7 +49,21 @@ const router = createBrowserRouter([
       },
       {
         path:"smartServices",
-        element:<SmartService/>
+        element:<SmartService/>,
+        children: [
+          {
+            path: "mapService",
+            element: <FindLocation/>
+          },
+          {
+            path: "wordClouds",
+            element: <WordClouds/>
+          },
+          {
+            path: "audioBooks",
+            element: <AudioBooks/>
+          }
+        ]
       },
       {
         path: "rankingList",

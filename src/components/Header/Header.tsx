@@ -39,7 +39,7 @@ function Header() {
 
   return (
     <>
-    <AppBar position="static">
+    <AppBar position="static" sx={{backgroundColor:'#0046AF'}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -47,14 +47,14 @@ function Header() {
             variant="h6"
             noWrap
             component={Link}
-            to="/"
+            to="home"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
               fontFamily: 'monospace',
               fontWeight: 700,
               letterSpacing: '.3rem',
-              color: 'inherit',
+              color: 'white',
               textDecoration: 'none',
             }}
           >
@@ -92,7 +92,7 @@ function Header() {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                  <Typography textAlign="center" sx={{color: 'white'}}>{page}</Typography>
                 </MenuItem>
               ))}
             </Menu>

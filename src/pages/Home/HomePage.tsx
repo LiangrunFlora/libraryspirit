@@ -2,13 +2,14 @@ import Header from "../../components/Header/Header";
 import FirstShowPage from "./FirstShowPage";
 import SelectPage from "./SelectPage";
 import InformationPage from "./InformationPage";
-const Start = ()=>{
+const HomePage = ()=>{
   return(
     <>
-      <Header/>
+        <FirstShowPage/>
+        <SelectPage/>
+        <InformationPage/>
     </>
-
   )
 }
 
-export default Start
+export default HomePage

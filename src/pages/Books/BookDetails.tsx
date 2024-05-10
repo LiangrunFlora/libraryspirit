@@ -2,8 +2,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Link from '@mui/material/Link';
-import {useLocation} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Slide, Stack} from "@mui/material";
 import Stars from "./Stars";
 import Button from "@mui/material/Button";
@@ -121,12 +120,12 @@ const BookDetails = () => {
         <Box sx={{paddingTop: 3, paddingLeft: 3}}>
           <div role="presentation" onClick={handleClick}>
             <Breadcrumbs aria-label="breadcrumb">
-              <Link underline="hover" color="inherit" href="/">
+              <Link to="/home" style={{ color: 'grey' }}>
                 首页
               </Link>
               <Link
-                underline="hover"
-                color="inherit"
+                to="/publicBooks"
+                style={{ color: 'grey' }}
               >
                 {bookDetailData.category}
               </Link>
