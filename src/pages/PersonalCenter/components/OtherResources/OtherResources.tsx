@@ -1,66 +1,54 @@
 import React,{ useState ,useEffect} from 'react';
 import { Table, Tag, Space, Button, Popconfirm, Card,message } from 'antd';
 import { EditOutlined, ClockCircleOutlined,CloseOutlined } from '@ant-design/icons';
-import './BookCirculate.scss'
+import './OtherResources.scss'
 
 type TableData ={
   bookId:number,
-  cover:string,
   bookName:string,
   rentTime:string,
-  expiredTime:string,
   isAgree:number
 }
 
 const tableData = [
     {
-      bookId: 1,
-      cover:"https://img0.baidu.com/it/u=4085765120,772646386&fm=253&fmt=auto&app=138&f=JPEG?w=809&h=500",
-      bookName: "The Great Gatsby",
-      rentTime: "",
-      expiredTime: "",
-      isAgree:0
+      "bookId": 6,
+      "bookName": "The Catcher in the Rye",
+      "rentTime": "2024-05-04",
+      "isAgree": 0
     },
     {
-      bookId: 2,
-      cover:"https://img0.baidu.com/it/u=4085765120,772646386&fm=253&fmt=auto&app=138&f=JPEG?w=809&h=500",
-      bookName: "To Kill a Mockingbird",
-      rentTime: "",
-      expiredTime: "",
-      isAgree:0
+      "bookId": 7,
+      "bookName": "To Kill a Mockingbird",
+      "rentTime": "2024-05-03",
+      "isAgree": 1
     },
     {
-      bookId: 3,
-      cover:"https://img0.baidu.com/it/u=4085765120,772646386&fm=253&fmt=auto&app=138&f=JPEG?w=809&h=500",
-      bookName: "1984",
-      rentTime: "2024-05-02",
-      expiredTime: "2024-06-02",
-      isAgree:1
+      "bookId": 8,
+      "bookName": "The Hobbit",
+      "rentTime": "2024-05-02",
+      "isAgree": 0
     },
     {
-      bookId: 4,
-      cover:"https://img0.baidu.com/it/u=4085765120,772646386&fm=253&fmt=auto&app=138&f=JPEG?w=809&h=500",
-      bookName: "Pride and Prejudice",
-      rentTime: "2024-04-20",
-      expiredTime: "2024-05-20",
-      isAgree:1
+      "bookId": 9,
+      "bookName": "The Lord of the Rings",
+      "rentTime": "2024-05-01",
+      "isAgree": 1
     },
     {
-      bookId: 5,
-      cover:"https://img0.baidu.com/it/u=4085765120,772646386&fm=253&fmt=auto&app=138&f=JPEG?w=809&h=500",
-      bookName: "The Catcher in the Rye",
-      rentTime: "",
-      expiredTime: "",
-      isAgree:0
+      "bookId": 10,
+      "bookName": "The Da Vinci Code",
+      "rentTime": "2024-04-30",
+      "isAgree": 0
     }
-  ];
+  ]
 
-const BookCirculate:React.FC = () => {
+const OtherResources:React.FC = () => {
 
 const [circulateData, setCirculateData] = useState<TableData[]>(tableData);
 
   const status = {
-    0: <Tag color='volcano'>审核中！</Tag>,
+    0: <Tag color='volcano'>等待中！</Tag>,
     1: <Tag color='green'>借阅中~</Tag>
   } as Record<string, JSX.Element>;
 
@@ -70,21 +58,12 @@ const [circulateData, setCirculateData] = useState<TableData[]>(tableData);
         dataIndex: 'bookId'
       },
       {
-        title:'封面',
-        dataIndex:'cover',
-        render: (coverUrl: string) => <img src={coverUrl} alt="封面" style={{ width: '100px', height: 'auto' }} />
-      },
-      {
         title: '书名',
         dataIndex: 'bookName'
       },
       {
         title: '借出时间',
         dataIndex: 'rentTime'
-      },
-      {
-        title: '归还截止时间',
-        dataIndex: 'expiredTime'
       },
       {
         title: '状态',
@@ -148,6 +127,7 @@ const [circulateData, setCirculateData] = useState<TableData[]>(tableData);
   ]
 
   const handleReturn = (record:TableData) => {
+
   };
 
   const handleExtention = (record:TableData) => {
@@ -161,11 +141,11 @@ const [circulateData, setCirculateData] = useState<TableData[]>(tableData);
 
   return (
     <div>
-      <Card title={`您目前还有${ tableData.filter(item => item.isAgree !== 0).length}本书未归还`}>
+      <Card title={`您目前还有他人的${ tableData.filter(item => item.isAgree !== 0).length}本书未归还`}>
         <Table rowKey={'bookId'} columns={columns} dataSource={circulateData} />
       </Card>
     </div>
   );
 };
 
-export default BookCirculate
+export default OtherResources

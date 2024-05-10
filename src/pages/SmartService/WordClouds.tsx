@@ -128,12 +128,18 @@ export const index = (props: any) => {
 
   return (
     <>
-      <Card sx={{height: '600px'}}>
+      <Card sx={{height: '600px', padding:3}}>
         <Typography
           variant="h5"
           component="div"
           sx={{marginLeft:3,marginTop:3, fontWeight: "bold" }}>
           你的词云分析
+        </Typography>
+        <Typography
+          sx={{ mb: 1.5, fontSize: 17, marginTop:2, marginLeft:3 }}
+          color="text.secondary"
+        >
+          使用形象化的词云分析你的个人行为！
         </Typography>
           <ReactEcharts
             option={option as any}
