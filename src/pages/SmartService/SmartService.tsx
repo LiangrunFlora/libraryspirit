@@ -1,7 +1,9 @@
+import WordClouds from "./WordClouds";
+
 const SmartService = ()=>{
   return (
     <>
-      <div>SmartServices</div>
+      <WordClouds/>
     </>
   )
 }

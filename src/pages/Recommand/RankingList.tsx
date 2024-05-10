@@ -28,7 +28,7 @@ const BookList: React.FC<rankingProps> = ({ bookList }) => {
               <ListItemAvatar>
                 <Avatar
                   alt={book.bookName}
-                  src={book.bookImage}
+                  src={book.cover}
                 />
               </ListItemAvatar>
               <ListItemText id={labelId} primary={book.bookName} />
