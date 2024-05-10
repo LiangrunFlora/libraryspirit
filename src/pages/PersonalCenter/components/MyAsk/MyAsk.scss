@@ -1,0 +1,52 @@
+.box {
+    width: 70%;
+    height: 100%;
+    margin: auto; /* 水平居中 */
+    padding-top: 5%;
+}
+
+h1{
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.askContainer{
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #b1d1e9; 
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.request {
+    padding-top: 16px;
+    margin-bottom: 32px;
+    text-align: center; 
+    border-radius: 8px;
+    background-color: cornsilk;
+}
+
+.request p{
+    font-size: 18px;
+}
+
+/* 添加自定义颜色 */
+.username {
+    color: #1890ff; /* Ant Design 默认主题的蓝色 */
+}
+
+.bookName {
+    color: #52c41a; /* Ant Design 默认主题的绿色 */
+}
+
+.buttonGroup{
+    margin-top: 20px;
+    padding-bottom: 16px;
+    display: flex;
+    button{
+        background-color: bisque;
+    }
+}
