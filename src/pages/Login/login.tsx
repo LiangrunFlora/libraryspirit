@@ -36,7 +36,7 @@ function Login() {
             <div className="text-center ">
               <h1 className="text-5xl font-bold">登 录</h1>
               <p className="py-6">
-                登入从而浏览商店,设置个人信息和进行与其他用户交流
+                登入从而进入“借阅灵”智慧图书管理系统，畅游书海
               </p>
             </div>
             <div className="card w-full max-w-md shrink-0 bg-base-100 shadow-2xl">
