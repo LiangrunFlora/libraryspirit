@@ -16,3 +16,5 @@ const getUserInfoFromSession = (): User | null => {
 const deleteUserInfoFromSession = () => {
     sessionStorage.removeItem('user');
 };
+
+export {saveUserInfoToSession,getUserInfoFromSession,deleteUserInfoFromSession}
