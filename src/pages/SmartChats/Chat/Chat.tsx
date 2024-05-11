@@ -23,18 +23,19 @@ const ChatMessage = ({message, sender}: Message) => {
   );
 };
 
-// todo 待测试
+
 const Chat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
-  const [chatData, setChatData] = useState<ChatResponse[]>([])
 
   const {mutate: getChatResponseMsg} = useMutation({
     mutationFn: getChatResponse,
     onSuccess: (data) => {
       if (data.code === 20094) {
-        setChatData(data.data as ChatResponse[])
+        console.log(data.data)
+        const chatData = data.data as ChatResponse[]
         chatData.map((msg, index) => {
+          console.log(msg.result)
           setMessages([...messages, {message: msg.result, sender: 'Spirit'}])
         })
       }

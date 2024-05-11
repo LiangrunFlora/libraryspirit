@@ -1,4 +1,5 @@
 import {API_URLS} from "../url/urls";
+import {red} from "@mui/material/colors";
 
 export default async function getChatResponse(
   ask_content:string
@@ -9,5 +10,6 @@ export default async function getChatResponse(
   if(!response.ok){
     throw new Error("Network response was not ok")
   }
+  console.log(response)
   return response.json()
 }

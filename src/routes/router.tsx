@@ -21,6 +21,8 @@ import FindLocation from "../pages/SmartService/FindLocation";
 import WordClouds from "../pages/SmartService/WordClouds";
 import AudioBooks from "../pages/SmartService/AudioBooks";
 import HomePage from "../pages/Home/HomePage";
+import ULibrary from "../pages/Books/ULibrary";
+import ULibraryDetails from "../pages/Books/ULibraryDetails";
 
 const router = createBrowserRouter([
   {
@@ -28,7 +30,7 @@ const router = createBrowserRouter([
     element:<Start/>,
     children:[
       {
-        path:"home",
+        path:"",
         element:<HomePage/>
       },
       {
@@ -36,8 +38,16 @@ const router = createBrowserRouter([
         element:<PublicBooks/>
       },
       {
+        path:"uLibrary",
+        element:<ULibrary/>
+      },
+      {
         path:"bookDetails",
         element:<BookDetails/>
+      },
+      {
+        path:"uLibraryDetails",
+        element:<ULibraryDetails/>
       },
       {
         path:"information",

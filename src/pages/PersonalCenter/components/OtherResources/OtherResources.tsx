@@ -4,42 +4,42 @@ import { EditOutlined, ClockCircleOutlined,CloseOutlined } from '@ant-design/ico
 import './OtherResources.scss'
 
 type TableData ={
-  bookId:number,
-  bookName:string,
-  rentTime:string,
-  isAgree:number
+  book_id:number,
+  book_name:string,
+  borrow_date:string,
+  is_agree:number
 }
 
 const tableData = [
     {
-      "bookId": 6,
-      "bookName": "The Catcher in the Rye",
-      "rentTime": "2024-05-04",
-      "isAgree": 0
+      "book_id": 6,
+      "book_name": "The Catcher in the Rye",
+      "borrow_date": "2024-05-04",
+      "is_agree": 0
     },
     {
-      "bookId": 7,
-      "bookName": "To Kill a Mockingbird",
-      "rentTime": "2024-05-03",
-      "isAgree": 1
+      "book_id": 7,
+      "book_name": "To Kill a Mockingbird",
+      "borrow_date": "2024-05-03",
+      "is_agree": 1
     },
     {
-      "bookId": 8,
-      "bookName": "The Hobbit",
-      "rentTime": "2024-05-02",
-      "isAgree": 0
+      "book_id": 8,
+      "book_name": "The Hobbit",
+      "borrow_date": "2024-05-02",
+      "is_agree": 0
     },
     {
-      "bookId": 9,
-      "bookName": "The Lord of the Rings",
-      "rentTime": "2024-05-01",
-      "isAgree": 1
+      "book_id": 9,
+      "book_name": "The Lord of the Rings",
+      "borrow_date": "2024-05-01",
+      "is_agree": 1
     },
     {
-      "bookId": 10,
-      "bookName": "The Da Vinci Code",
-      "rentTime": "2024-04-30",
-      "isAgree": 0
+      "book_id": 10,
+      "book_name": "The Da Vinci Code",
+      "borrow_date": "2024-04-30",
+      "is_agree": 0
     }
   ]
 
@@ -55,26 +55,26 @@ const [circulateData, setCirculateData] = useState<TableData[]>(tableData);
   const columns = [
      {
         title: '书号',
-        dataIndex: 'bookId'
+        dataIndex: 'book_id'
       },
       {
         title: '书名',
-        dataIndex: 'bookName'
+        dataIndex: 'book_name'
       },
       {
         title: '借出时间',
-        dataIndex: 'rentTime'
+        dataIndex: 'borrow_date'
       },
       {
         title: '状态',
-        dataIndex: 'isAgree',
+        dataIndex: 'is_agree',
         render: (data:string) => status[data]
       },
       {
         title: '操作',
         render: (record: TableData) => (
           <Space size="middle">
-          {record.isAgree == 0 && (<Popconfirm
+          {record.is_agree == 0 && (<Popconfirm
               title="取消申请"
               description="确认取消申请？"
               onConfirm={() => handleCancle(record)}
@@ -89,7 +89,7 @@ const [circulateData, setCirculateData] = useState<TableData[]>(tableData);
               icon={<CloseOutlined />} 
             />
         </Popconfirm>)}
-        {record.isAgree == 1 && (<Popconfirm
+        {record.is_agree == 1 && (<Popconfirm
               title="申请延时"
               description="确认发起延期申请？"
               onConfirm={() => handleExtention(record)}
@@ -104,7 +104,7 @@ const [circulateData, setCirculateData] = useState<TableData[]>(tableData);
               icon={<ClockCircleOutlined />} 
             />
         </Popconfirm>)}
-      {record.isAgree == 1 && ( 
+      {record.is_agree == 1 && ( 
         <Popconfirm
           title="申请还书"
           description="确认发起还书申请？"
@@ -141,8 +141,8 @@ const [circulateData, setCirculateData] = useState<TableData[]>(tableData);
 
   return (
     <div>
-      <Card title={`您目前还有他人的${ tableData.filter(item => item.isAgree !== 0).length}本书未归还`}>
-        <Table rowKey={'bookId'} columns={columns} dataSource={circulateData} />
+      <Card title={`您目前还有他人的${ tableData.filter(item => item.is_agree !== 0).length}本书未归还`}>
+        <Table rowKey={'book_id'} columns={columns} dataSource={circulateData} />
       </Card>
     </div>
   );

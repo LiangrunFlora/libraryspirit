@@ -142,3 +142,5 @@ export default function MenuService() {
     </>
   );
 }
+
+export {ImageButton}

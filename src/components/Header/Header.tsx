@@ -13,6 +13,10 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import {Link, Outlet} from "react-router-dom";
+import PersonalImage from '../../resources/HomeImage/personal.png'
+import {useNavigate} from "react-router";
+import {getUserInfoFromSession} from "../../util/userInfo";
+import toast from "react-hot-toast";
 
 const pages = ['书籍探索', '智能聊天', '智能服务', '图书排行'];
 const settings = ['Profile', 'Account', 'SelfLibrary', 'Logout'];
@@ -22,6 +26,7 @@ function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
+  const navigate = useNavigate()
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -35,6 +40,21 @@ function Header() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+    // 设置跳转用户状态
+    const currentUser = getUserInfoFromSession()
+    if(currentUser){
+      //用户已登录
+      toast.success(<b>欢迎来到您的个人中心</b>)
+      navigate('personal')
+    }else{
+      //否则到登录注册界面
+      toast.dismiss()
+      toast.loading(<b>您还未登录，正在跳转登录界面</b>)
+      navigate('/login')
+      setTimeout(() => {
+        toast.dismiss()
+      },1000)
+    }
   };
 
   return (
@@ -47,7 +67,7 @@ function Header() {
             variant="h6"
             noWrap
             component={Link}
-            to="home"
+            to="/"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -114,7 +134,7 @@ function Header() {
               textDecoration: 'none',
             }}
           >
-            借阅灵图书管理系统
+            Library Spirit
           </Typography>
           {/*导航栏按钮*/}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
@@ -134,7 +154,7 @@ function Header() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="User" src={PersonalImage} />
               </IconButton>
             </Tooltip>
             <Menu

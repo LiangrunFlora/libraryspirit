@@ -1,7 +1,7 @@
 declare type User = {
     user_id:number;
     user_account:string;
-    username: string;
+    user_name: string;
     gender: string;
     phone:string;
     email:string;

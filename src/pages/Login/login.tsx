@@ -1,16 +1,17 @@
 
 import React, { useState } from "react";
 import toast from "react-hot-toast";
+import { useMutation } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "react-router-dom";
+import { message } from "antd";
+import { saveUserInfoToSession } from "../../util/userInfo";
+import {loginByAccount} from "../../apis/queryFn/login";
 
 
 function Login() {
   const navigate = useNavigate();
   const [account, setAccount] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-
-  const location = useLocation();
-  console.log(location.pathname);
 
   function handleAccountChange(event: React.ChangeEvent<HTMLInputElement>) {
     const value = event.target.value;
@@ -22,10 +23,20 @@ function Login() {
     setPassword(value);
   }
 
-
-  function handleLoginClick(event: React.MouseEvent): void {
+  async function handleLoginClick(event: React.MouseEvent){
     event.preventDefault();
-    toast.loading(<b>正在登陆...</b>);
+    const res = await loginByAccount(account,password);
+    console.log(res);
+    if(res.msg==='success'){
+      saveUserInfoToSession(res.data)
+      message.success("登陆成功，即将跳转")
+      setTimeout(() => {
+        navigate('/personal');
+      }, 1000);
+    }
+    else{
+      message.error("账号或密码错误！")
+    }
   }
 
   return (

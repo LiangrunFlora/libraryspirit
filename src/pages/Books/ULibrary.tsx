@@ -23,109 +23,61 @@ import toast from "react-hot-toast";
 import {useEffect, useState} from "react";
 import getBooksByCategory from "../../apis/queryFn/getBooksByCategory";
 import AddIcon from "@mui/icons-material/Add";
-
+import getULibrary from "../../apis/queryFn/getULibrary";
+import ULibraryCover from "../../resources/HomeImage/uLibraryCover.png"
 
 const categoryList = ['文学类', '自然科学类', '工学类', '经济类', '历史地理类']
 const personalResourcesList = ['学习笔记','课程资料','更多']
 
-// 测试数据
-const itemData: Books[] = [
-  {
-    book_id: 1,
-    cover: "https://images.unsplash.com/photo-1589118949245-7d38baf380d6",
-    book_name: "Book One",
-    author: "Author One",
-    category: "Fiction",
-    introduction: "This is the introduction of Book One.",
-    press: "Publisher One",
-    stars: 4,
-  },
-  {
-    book_id: 2,
-    cover: "https://images.unsplash.com/photo-1471357674240-e1a485acb3e1",
-    book_name: "Book Two",
-    author: "Author Two",
-    category: "Science",
-    introduction: "This is the introduction of Book Two.",
-    press: "Publisher Two",
-    stars: 5,
-  },
-  {
-    book_id: 3,
-    cover: "https://images.unsplash.com/photo-1567306301408-9b74779a11af",
-    book_name: "Book Three",
-    author: "Author Three",
-    category: "History",
-    introduction: "This is the introduction of Book Three.",
-    press: "Publisher Three",
-    stars: 3,
-  },
-];
-
 interface MediaCardProps {
-  item: Books;
+  item: ULibrary;
 }
 
-const PublicBooks = () => {
+const ULibrary = () => {
 
-  const [bookData, setBookData] = useState<Books[]>([])
+  const [uLibraryData, setuLibraryData] = useState<ULibrary[]>([])
 
   const navigate = useNavigate()
 
-  const onBookClickHandle = (item: Books) => {
+  const onBookClickHandle = (item: ULibrary) => {
     return () => {
       // 在这里处理点击事件，并访问传递的参数 item
-      console.log("Clicked book:", item);
+      console.log("Clicked uLibrary:", item);
       // 使用编程式导航进行页面跳转，并将item作为参数传递
-      navigate(`/bookDetails`, {state: {bookDetailData: item}});
+      navigate(`/uLibraryDetails`, {state: {uLibraryDetailData: item}});
     };
   };
 
-  const {mutate: getPublicBooks} = useMutation({
-    mutationFn: getAllBooks,
+  const {mutate: getULibraryBooks} = useMutation({
+    mutationFn: getULibrary,
     onSuccess: (data) => {
-      if (data.code === 20014) {
+      if (data.code === 20044) {
         toast.dismiss();
-        toast.success(<b>获取全部图书成功！</b>)
+        toast.success(<b>获取个人图书馆资源成功！</b>)
         console.log(data.data)
-        setBookData(data.data as Books[])
+        setuLibraryData(data.data as ULibrary[])
       }
     },
     onError: (error) => {
-      toast.error(<b>获取图书列表失败</b>)
-      // console.log(error)
-    }
-  })
-
-  const {mutate: getCategoryBooks} = useMutation({
-    mutationFn: getBooksByCategory,
-    onSuccess: (data) => {
-      if (data.code === 20014) {
-        toast.dismiss();
-        toast.success(<b>获取图书成功！</b>)
-        console.log(data.data)
-        setBookData(data.data as Books[])
-      }
-    },
-    onError: (error) => {
-      toast.error(<b>获取对应种类图书失败</b>)
+      toast.error(<b>获取个人图书馆资源失败</b>)
     }
   })
 
   useEffect(() => {
-    getPublicBooks();
+    getULibraryBooks()
   }, [])
 
- //获取图书类别
-  const handleCategoryClick = (category:string) => {
-    return () => {
-      console.log(category)
-      getCategoryBooks(category);
-    }
+
+  //获取图书类别
+  const handleCategoryClick = () => {
+     navigate('/publicBooks')
   }
+
   //跳转个人图书馆
   const handlePersonalResClick = () => {
+    return () => {
       navigate('/uLibrary')
+    }
   }
 
   // 具体图书Card
@@ -134,7 +86,7 @@ const PublicBooks = () => {
       <Card sx={{maxWidth: 350, height:320}}>
         <CardMedia
           sx={{height: 140}}
-          image={item.cover}
+          image={ULibraryCover}
           title={item.book_name}
         />
         <CardContent>
@@ -159,7 +111,7 @@ const PublicBooks = () => {
     setOpen(newOpen);
   };
 
-  function bookchunk(array:Books[], size:number) {
+  function bookchunk(array:ULibrary[], size:number) {
     return Array.from({ length: Math.ceil(array.length / size) }, (_, index) =>
       array.slice(index * size, index * size + size)
     );
@@ -170,7 +122,7 @@ const PublicBooks = () => {
       <List>
         {categoryList.map((text, index) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton onClick={handleCategoryClick(text)}>
+            <ListItemButton onClick={handleCategoryClick}>
               <ListItemIcon>
                 {index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}
               </ListItemIcon>
@@ -231,7 +183,7 @@ const PublicBooks = () => {
             padding: 3
           }}>
             <Grid container spacing={2}>
-              {bookchunk(bookData, 3).map((row, rowIndex) => (
+              {bookchunk(uLibraryData, 3).map((row, rowIndex) => (
                 <Grid item xs={12} key={rowIndex}>
                   <Grid container spacing={2}>
                     {row.map((item, itemIndex) => (
@@ -267,5 +219,4 @@ const PublicBooks = () => {
     </>
   )
 }
-export default PublicBooks
-export {itemData}
+export default ULibrary
