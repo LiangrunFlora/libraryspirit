@@ -2,62 +2,78 @@ import React,{ useState ,useEffect} from 'react';
 import { Table, Tag, Space, Button, Popconfirm, Card,message } from 'antd';
 import { EditOutlined, ClockCircleOutlined,CloseOutlined } from '@ant-design/icons';
 import './BookCirculate.scss'
+import { getUserInfoFromSession } from '../../../../util/userInfo';
+import { getBorrows, returnBorrows,deleteBorrows } from '../../../../apis/queryfn/borrows';
 
-type TableData ={
-  bookId:number,
-  cover:string,
-  bookName:string,
-  rentTime:string,
-  expiredTime:string,
-  isAgree:number
-}
-
-const tableData = [
-    {
-      bookId: 1,
-      cover:"https://img0.baidu.com/it/u=4085765120,772646386&fm=253&fmt=auto&app=138&f=JPEG?w=809&h=500",
-      bookName: "The Great Gatsby",
-      rentTime: "",
-      expiredTime: "",
-      isAgree:0
-    },
-    {
-      bookId: 2,
-      cover:"https://img0.baidu.com/it/u=4085765120,772646386&fm=253&fmt=auto&app=138&f=JPEG?w=809&h=500",
-      bookName: "To Kill a Mockingbird",
-      rentTime: "",
-      expiredTime: "",
-      isAgree:0
-    },
-    {
-      bookId: 3,
-      cover:"https://img0.baidu.com/it/u=4085765120,772646386&fm=253&fmt=auto&app=138&f=JPEG?w=809&h=500",
-      bookName: "1984",
-      rentTime: "2024-05-02",
-      expiredTime: "2024-06-02",
-      isAgree:1
-    },
-    {
-      bookId: 4,
-      cover:"https://img0.baidu.com/it/u=4085765120,772646386&fm=253&fmt=auto&app=138&f=JPEG?w=809&h=500",
-      bookName: "Pride and Prejudice",
-      rentTime: "2024-04-20",
-      expiredTime: "2024-05-20",
-      isAgree:1
-    },
-    {
-      bookId: 5,
-      cover:"https://img0.baidu.com/it/u=4085765120,772646386&fm=253&fmt=auto&app=138&f=JPEG?w=809&h=500",
-      bookName: "The Catcher in the Rye",
-      rentTime: "",
-      expiredTime: "",
-      isAgree:0
-    }
-  ];
+// 测试数据
+// const BookCirculateTypeExample = [
+//     {
+//       id:1,
+//       book_id: 1,
+//       cover:"https://img0.baidu.com/it/u=4085765120,772646386&fm=253&fmt=auto&app=138&f=JPEG?w=809&h=500",
+//       book_name: "The Great Gatsby",
+//       borrow_date: "",
+//       expired_date: "",
+//       is_agree:0
+//     },
+//     {
+//       id:1,
+//       book_id: 2,
+//       cover:"https://img0.baidu.com/it/u=4085765120,772646386&fm=253&fmt=auto&app=138&f=JPEG?w=809&h=500",
+//       book_name: "To Kill a Mockingbird",
+//       borrow_date: "",
+//       expired_date: "",
+//       is_agree:0
+//     },
+//     {
+//       id:1,
+//       book_id: 3,
+//       cover:"https://img0.baidu.com/it/u=4085765120,772646386&fm=253&fmt=auto&app=138&f=JPEG?w=809&h=500",
+//       book_name: "1984",
+//       borrow_date: "2024-05-02",
+//       expired_date: "2024-06-02",
+//       is_agree:1
+//     },
+//     {
+//       id:1,
+//       book_id: 4,
+//       cover:"https://img0.baidu.com/it/u=4085765120,772646386&fm=253&fmt=auto&app=138&f=JPEG?w=809&h=500",
+//       book_name: "Pride and Prejudice",
+//       borrow_date: "2024-04-20",
+//       expired_date: "2024-05-20",
+//       is_agree:1
+//     },
+//     {
+//       id:1,
+//       book_id: 5,
+//       cover:"https://img0.baidu.com/it/u=4085765120,772646386&fm=253&fmt=auto&app=138&f=JPEG?w=809&h=500",
+//       book_name: "The Catcher in the Rye",
+//       borrow_date: "",
+//       expired_date: "",
+//       is_agree:0
+//     }
+//   ];
 
 const BookCirculate:React.FC = () => {
 
-const [circulateData, setCirculateData] = useState<TableData[]>(tableData);
+const [circulateData, setCirculateData] = useState<BookCirculateType[]>();
+
+const fetchData = async () => {
+  const userId = getUserInfoFromSession()?.user_id || 1;
+  const res = await getBorrows(userId)
+  return res;
+};
+
+useEffect(() => {
+  fetchData()
+  .then(res => {
+     console.log(res.data); 
+     setCirculateData(res.data)
+  })
+  .catch(error => {
+     message.error("获取失败~")
+  });
+}, []);
 
   const status = {
     0: <Tag color='volcano'>审核中！</Tag>,
@@ -67,7 +83,7 @@ const [circulateData, setCirculateData] = useState<TableData[]>(tableData);
   const columns = [
      {
         title: '书号',
-        dataIndex: 'bookId'
+        dataIndex: 'book_id'
       },
       {
         title:'封面',
@@ -76,26 +92,26 @@ const [circulateData, setCirculateData] = useState<TableData[]>(tableData);
       },
       {
         title: '书名',
-        dataIndex: 'bookName'
+        dataIndex: 'book_name'
       },
       {
         title: '借出时间',
-        dataIndex: 'rentTime'
+        dataIndex: 'borrow_date'
       },
       {
         title: '归还截止时间',
-        dataIndex: 'expiredTime'
+        dataIndex: 'expired_date'
       },
       {
         title: '状态',
-        dataIndex: 'isAgree',
+        dataIndex: 'is_agree',
         render: (data:string) => status[data]
       },
       {
         title: '操作',
-        render: (record: TableData) => (
+        render: (record: BookCirculateType) => (
           <Space size="middle">
-          {record.isAgree == 0 && (<Popconfirm
+          {record.is_agree == 0 && (<Popconfirm
               title="取消申请"
               description="确认取消申请？"
               onConfirm={() => handleCancle(record)}
@@ -110,7 +126,7 @@ const [circulateData, setCirculateData] = useState<TableData[]>(tableData);
               icon={<CloseOutlined />} 
             />
         </Popconfirm>)}
-        {record.isAgree == 1 && (<Popconfirm
+        {record.is_agree == 1 && (<Popconfirm
               title="申请延时"
               description="确认发起延期申请？"
               onConfirm={() => handleExtention(record)}
@@ -125,7 +141,7 @@ const [circulateData, setCirculateData] = useState<TableData[]>(tableData);
               icon={<ClockCircleOutlined />} 
             />
         </Popconfirm>)}
-      {record.isAgree == 1 && ( 
+      {record.is_agree == 1 && ( 
         <Popconfirm
           title="申请还书"
           description="确认发起还书申请？"
@@ -147,22 +163,37 @@ const [circulateData, setCirculateData] = useState<TableData[]>(tableData);
       }
   ]
 
-  const handleReturn = (record:TableData) => {
+  const handleReturn = async (record:BookCirculateType) => {
+    const res = await returnBorrows(record.id)
+    if(res.code===20063){
+      setCirculateData(circulateData?.filter(item => item.id!=record.id))
+      message.success("还书成功~")
+    }
+    else{
+      message.error("出错了~")
+    }
   };
 
-  const handleExtention = (record:TableData) => {
-
+  const handleExtention = (record:BookCirculateType) => {
+    message.success("申请延时发送成功~")
   };
 
-  const handleCancle = (record:TableData)=>{
-
+  const handleCancle = async (record:BookCirculateType)=>{
+    const res = await deleteBorrows(record.id)
+    if(res.code===20062){
+      setCirculateData(circulateData?.filter(item => item.id!=record.id))
+      message.success("取消成功~")
+    }
+    else{
+      message.error("出错了~")
+    }
   }
 
 
   return (
     <div>
-      <Card title={`您目前还有${ tableData.filter(item => item.isAgree !== 0).length}本书未归还`}>
-        <Table rowKey={'bookId'} columns={columns} dataSource={circulateData} />
+      <Card title={`您目前还有${ circulateData?.filter(item => item.is_agree !== 0).length}本书未归还`}>
+        <Table rowKey={'id'} columns={columns} dataSource={circulateData} />
       </Card>
     </div>
   );

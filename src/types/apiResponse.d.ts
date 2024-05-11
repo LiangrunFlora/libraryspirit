@@ -3,3 +3,9 @@ declare interface ApiResponse {
   data: object;
   msg: string;
 }
+
+declare interface Result<T>{
+  code:number;
+  data:T;
+  msg:string;
+}

@@ -18,10 +18,10 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import Divider from '@mui/material/Divider';
 import {useMutation} from "@tanstack/react-query";
-import getAllBooks from "../../apis/queryFn/getAllBooks";
+import getAllBooks from '../../apis/queryfn/getAllBooks';
 import toast from "react-hot-toast";
 import {useEffect, useState} from "react";
-import getBooksByCategory from "../../apis/queryFn/getBooksByCategory";
+import getBooksByCategory from '../../apis/queryfn/getBooksByCategory';
 
 
 const categoryList = ['文学类', '自然科学类', '工学类', '经济类', '历史地理类']
