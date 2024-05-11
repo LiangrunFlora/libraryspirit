@@ -1,7 +1,7 @@
 declare type Books = {
-  bookId:number;
+  book_id:number;
   cover:string;
-  bookName:string;
+  book_name:string;
   author:string;
   category:string;
   introduction:string;

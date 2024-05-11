@@ -1,0 +1,62 @@
+.bilibili-comments {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.bilibili-title {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+}
+
+.comment-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.comment-item {
+    border-bottom: 1px solid #eee;
+    padding: 15px 0;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.user-name {
+    font-weight: bold;
+}
+
+.comment-content {
+    margin-bottom: 8px;
+}
+
+.comment-info {
+    color: #999;
+    font-size: 0.9em;
+}
+
+.comment-like {
+    color: #999;
+    margin-right: 10px;
+}
+
+.comment-reply {
+    color: #999;
+    margin-left: 20px;
+    cursor: pointer;
+}
+.comment-time {
+    color: #999;
+    font-size: 0.9em;
+}

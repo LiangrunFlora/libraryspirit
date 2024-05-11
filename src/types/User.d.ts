@@ -6,4 +6,5 @@ declare type User = {
     phone:string;
     email:string;
     profile: string;
+    cover:string;
 };

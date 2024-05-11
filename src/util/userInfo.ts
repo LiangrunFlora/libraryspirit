@@ -1,10 +1,10 @@
 // 保存用户信息到本地 session
-const saveUserInfoToSession = (user: User) => {
+export const saveUserInfoToSession = (user: User) => {
     sessionStorage.setItem('user', JSON.stringify(user));
 };
 
 // 从本地 session 获取用户信息
-const getUserInfoFromSession = (): User | null => {
+export const getUserInfoFromSession = (): User | null => {
     const userInfo = sessionStorage.getItem('user');
     if (userInfo) {
         return JSON.parse(userInfo);
@@ -13,8 +13,6 @@ const getUserInfoFromSession = (): User | null => {
 };
 
 // 从本地 session 删除用户信息
-const deleteUserInfoFromSession = () => {
+export const deleteUserInfoFromSession = () => {
     sessionStorage.removeItem('user');
 };
-
-export {saveUserInfoToSession,getUserInfoFromSession,deleteUserInfoFromSession}

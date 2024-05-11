@@ -9,4 +9,6 @@ export const API_URLS = {
   asksRefuse:`${BASE_URL}/asksRefuse`,
   borrows:`${BASE_URL}/borrows`,
   borrowsHistory:`${BASE_URL}/borrowsHistory`,
+  getCommentInfoByBookId: `${BASE_URL}/commentInfo`,
+  getChatResponse: `${BASE_URL}/chat`
 };

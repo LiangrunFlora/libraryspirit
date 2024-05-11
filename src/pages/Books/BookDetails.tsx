@@ -7,8 +7,8 @@ import {useLocation} from "react-router-dom";
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Slide, Stack} from "@mui/material";
 import Stars from "./Stars";
 import Button from "@mui/material/Button";
-import CommandList from "./CommandList";
-import React, {useState} from "react";
+import CommandList from "./CommentList";
+import React, {useEffect, useState} from "react";
 import {TransitionProps} from "@mui/material/transitions";
 import toast from "react-hot-toast";
 import List from "@mui/material/List";
@@ -17,6 +17,11 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from '@mui/icons-material/Close';
 import Box from "@mui/material/Box";
+import {useMutation} from "@tanstack/react-query";
+import getCommentsByBookId from "../../apis/queryFn/getCommentsByBookId";
+import CommentList from "./CommentList";
+import getCommentInfoByBookId from "../../apis/queryFn/getCommentsByBookId";
+import {useNavigate} from "react-router";
 
 
 function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
@@ -33,6 +38,26 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const commentInfoTest: CommentInfo[] = [
+  {
+    user_cover: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af',
+    user_name: 'User 1',
+    content: '这是第一条评论。',
+    comment_date: new Date('2024-05-10T08:30:00'),
+  },
+  {
+    user_cover: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af',
+    user_name: 'User 2',
+    content: '这是第二条评论。',
+    comment_date: new Date('2024-05-09T12:45:00'),
+  },
+  {
+    user_cover: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af',
+    user_name: 'User 3',
+    content: '这是第三条评论。',
+    comment_date: new Date('2024-05-08T18:20:00'),
+  },
+];
 
 const BookDetails = () => {
   const location = useLocation()
@@ -42,7 +67,22 @@ const BookDetails = () => {
   //借书确认窗口操作
   const [open, setOpen] = useState(false);
   const [readOpen, setReadOpen] = useState(false)
+  const [commentInfo, setCommentInfo] = useState<CommentInfo[]>([])
 
+  const {mutate:getBookComments} = useMutation({
+    mutationFn:getCommentInfoByBookId,
+    onSuccess: (data) => {
+      if(data.code === 20034){
+        toast.dismiss()
+        toast.success(<b>获取图书评论成功！</b>)
+        setCommentInfo(data.data as CommentInfo[])
+        console.log(data.data)
+      }
+    },
+    onError: (error) => {
+      toast.error(<b>获取图书评论失败！</b>)
+    }
+  })
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -64,6 +104,17 @@ const BookDetails = () => {
     setReadOpen(false)
   }
 
+  const navigate = useNavigate()
+  // 获取位置信息
+  const handleLocationClick = () => {
+    navigate(`/smartServices`);
+  }
+
+  // 进入界面即加载评论，且只加载一次
+  useEffect(() => {
+    getBookComments(bookDetailData.book_id)
+  },[])
+
   return (
     <>
       <React.Fragment>
@@ -79,7 +130,7 @@ const BookDetails = () => {
               >
                 {bookDetailData.category}
               </Link>
-              <Typography color="text.primary">{bookDetailData.bookName}</Typography>
+              <Typography color="text.primary">{bookDetailData.book_name}</Typography>
             </Breadcrumbs>
           </div>
         </Box>
@@ -98,7 +149,7 @@ const BookDetails = () => {
                 <img
                   srcSet={`${bookDetailData.cover}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
                   src={`${bookDetailData.cover}?w=164&h=164&fit=crop&auto=format`}
-                  alt={bookDetailData.bookName}
+                  alt={bookDetailData.book_name}
                   loading="lazy"
                 />
               </Grid>
@@ -108,7 +159,7 @@ const BookDetails = () => {
                   component="div"
                   sx={{margin: 3, fontWeight: "bold"}}
                 >
-                  {bookDetailData.bookName}
+                  {bookDetailData.book_name}
                 </Typography>
 
                 <Typography
@@ -162,7 +213,7 @@ const BookDetails = () => {
                           <CloseIcon/>
                         </IconButton>
                         <Typography sx={{ml: 2, flex: 1}} variant="h6" component="div">
-                          {bookDetailData.bookName}
+                          {bookDetailData.book_name}
                         </Typography>
                         <Button autoFocus color="inherit" onClick={handleClose}>
                           save
@@ -198,7 +249,7 @@ const BookDetails = () => {
                       <Button onClick={handleConfirm}>确认</Button>
                     </DialogActions>
                   </Dialog>
-                  <Button color="secondary"> 查看位置</Button>
+                  <Button color="secondary" onClick={handleLocationClick}> 查看位置</Button>
                 </Stack>
               </Grid>
             </Grid>
@@ -218,7 +269,7 @@ const BookDetails = () => {
             marginLeft: 6
           }}
         >
-          <CommandList/>
+         <CommentList commentInfo={commentInfo}/>
         </Card>
       </React.Fragment>
     </>

@@ -28,9 +28,9 @@ const categoryList = ['文学类', '自然科学类', '工学类', '经济类', 
 // 测试数据
 const itemData: Books[] = [
   {
-    bookId: 1,
+    book_id: 1,
     cover: "https://images.unsplash.com/photo-1589118949245-7d38baf380d6",
-    bookName: "Book One",
+    book_name: "Book One",
     author: "Author One",
     category: "Fiction",
     introduction: "This is the introduction of Book One.",
@@ -38,9 +38,9 @@ const itemData: Books[] = [
     stars: 4,
   },
   {
-    bookId: 2,
+    book_id: 2,
     cover: "https://images.unsplash.com/photo-1471357674240-e1a485acb3e1",
-    bookName: "Book Two",
+    book_name: "Book Two",
     author: "Author Two",
     category: "Science",
     introduction: "This is the introduction of Book Two.",
@@ -48,9 +48,9 @@ const itemData: Books[] = [
     stars: 5,
   },
   {
-    bookId: 3,
+    book_id: 3,
     cover: "https://images.unsplash.com/photo-1567306301408-9b74779a11af",
-    bookName: "Book Three",
+    book_name: "Book Three",
     author: "Author Three",
     category: "History",
     introduction: "This is the introduction of Book Three.",
@@ -128,11 +128,11 @@ const PublicBooks = () => {
         <CardMedia
           sx={{height: 140}}
           image={item.cover}
-          title={item.bookName}
+          title={item.book_name}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            {item.bookName}
+            {item.book_name}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {item.introduction}
