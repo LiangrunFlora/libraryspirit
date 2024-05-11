@@ -2,63 +2,83 @@ import React,{ useState ,useEffect} from 'react';
 import { Table, Tag, Space, Button, Popconfirm, Card,message } from 'antd';
 import { EditOutlined, ClockCircleOutlined,CloseOutlined} from '@ant-design/icons';
 import './BookHistory.scss'
+import { getUserInfoFromSession } from '../../../../util/userInfo';
+import { deleteBorrowsHistory, getBorrowsHistory } from '../../../../apis/queryfn/borrowsHistory';
 
-const tableData: BookHistoryType[] = [
-    {
-      id:1,
-      book_id: 1,
-      cover:"https://img0.baidu.com/it/u=4085765120,772646386&fm=253&fmt=auto&app=138&f=JPEG?w=809&h=500",
-      book_name: "The Great Gatsby",
-      author: "F. Scott Fitzgerald",
-      category: "Fiction",
-      press: "Scribner",
-      borrow_date: "2024-05-09"
-    },
-    {
-      id:2,
-      book_id: 2,
-      cover:"https://img0.baidu.com/it/u=4085765120,772646386&fm=253&fmt=auto&app=138&f=JPEG?w=809&h=500",
-      book_name: "To Kill a Mockingbird",
-      author: "Harper Lee",
-      category: "Fiction",
-      press: "J. B. Lippincott & Co.",
-      borrow_date: "2024-04-25"
-    },
-    {
-      id:3,
-      book_id: 3,
-      cover:"https://img0.baidu.com/it/u=4085765120,772646386&fm=253&fmt=auto&app=138&f=JPEG?w=809&h=500",
-      book_name: "1984",
-      author: "George Orwell",
-      category: "Science Fiction",
-      press: "Secker & Warburg",
-      borrow_date: "2024-05-02"
-    },
-    {
-      id:4,
-      book_id: 4,
-      cover:"https://img0.baidu.com/it/u=4085765120,772646386&fm=253&fmt=auto&app=138&f=JPEG?w=809&h=500",
-      book_name: "Pride and Prejudice",
-      author: "Jane Austen",
-      category: "Classic",
-      press: "T. Egerton, Whitehall",
-      borrow_date: "2024-04-20"
-    },
-    {
-      id:5,
-      book_id: 5,
-      cover:"https://img0.baidu.com/it/u=4085765120,772646386&fm=253&fmt=auto&app=138&f=JPEG?w=809&h=500",
-      book_name: "The Catcher in the Rye",
-      author: "J. D. Salinger",
-      category: "Fiction",
-      press: "Little, Brown and Company",
-      borrow_date: "2024-04-15"
-    }
-  ];
+// 示例数据
+// const tableData: BookHistoryType[] = [
+//     {
+//       id:1,
+//       book_id: 1,
+//       cover:"https://img0.baidu.com/it/u=4085765120,772646386&fm=253&fmt=auto&app=138&f=JPEG?w=809&h=500",
+//       book_name: "The Great Gatsby",
+//       author: "F. Scott Fitzgerald",
+//       category: "Fiction",
+//       press: "Scribner",
+//       borrow_date: "2024-05-09"
+//     },
+//     {
+//       id:2,
+//       book_id: 2,
+//       cover:"https://img0.baidu.com/it/u=4085765120,772646386&fm=253&fmt=auto&app=138&f=JPEG?w=809&h=500",
+//       book_name: "To Kill a Mockingbird",
+//       author: "Harper Lee",
+//       category: "Fiction",
+//       press: "J. B. Lippincott & Co.",
+//       borrow_date: "2024-04-25"
+//     },
+//     {
+//       id:3,
+//       book_id: 3,
+//       cover:"https://img0.baidu.com/it/u=4085765120,772646386&fm=253&fmt=auto&app=138&f=JPEG?w=809&h=500",
+//       book_name: "1984",
+//       author: "George Orwell",
+//       category: "Science Fiction",
+//       press: "Secker & Warburg",
+//       borrow_date: "2024-05-02"
+//     },
+//     {
+//       id:4,
+//       book_id: 4,
+//       cover:"https://img0.baidu.com/it/u=4085765120,772646386&fm=253&fmt=auto&app=138&f=JPEG?w=809&h=500",
+//       book_name: "Pride and Prejudice",
+//       author: "Jane Austen",
+//       category: "Classic",
+//       press: "T. Egerton, Whitehall",
+//       borrow_date: "2024-04-20"
+//     },
+//     {
+//       id:5,
+//       book_id: 5,
+//       cover:"https://img0.baidu.com/it/u=4085765120,772646386&fm=253&fmt=auto&app=138&f=JPEG?w=809&h=500",
+//       book_name: "The Catcher in the Rye",
+//       author: "J. D. Salinger",
+//       category: "Fiction",
+//       press: "Little, Brown and Company",
+//       borrow_date: "2024-04-15"
+//     }
+//   ];
 
 const BookHistory:React.FC = () => {
 
-  const [historyData, setHistoryData] = useState<BookHistoryType[]>(tableData);
+  const [historyData, setHistoryData] = useState<BookHistoryType[]>();
+
+  const fetchData = async () => {
+    const userId = getUserInfoFromSession()?.user_id || 1;
+    const res = await getBorrowsHistory(userId)
+    return res;
+  };
+  
+  useEffect(() => {
+    fetchData()
+    .then(res => {
+       console.log(res.data); 
+       setHistoryData(res.data)
+    })
+    .catch(error => {
+       message.error("获取失败~")
+    });
+  }, []);
 
   const columns = [
      {
@@ -113,17 +133,26 @@ const BookHistory:React.FC = () => {
       }
   ]
 
-  const handleDelete = (record:BookHistoryType) => {
-    const updatedData = tableData.filter(order => {
+  const handleDelete = async (record:BookHistoryType) => {
+    const res = await deleteBorrowsHistory(record.id)
+    if(res.code===20062)
+      {
+        const updatedData = historyData?.filter(order => {
         return order.book_id !== record.book_id;
-    });
-    setHistoryData(updatedData)
+        });
+        setHistoryData(updatedData)
+        message.success("删除成功~")
+      }
+      else {
+        message.error("删除失败~")
+      }
+  
   };
 
 
   return (
     <div>
-      <Card title={`您截止现在已经借阅了${tableData.length}本书`}>
+      <Card title={`您截止现在已经借阅了${historyData?.length}本书`}>
         <Table rowKey={'id'} columns={columns} dataSource={historyData} />
       </Card>
     </div>

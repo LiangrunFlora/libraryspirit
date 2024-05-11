@@ -18,9 +18,8 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from '@mui/icons-material/Close';
 import Box from "@mui/material/Box";
 import {useMutation} from "@tanstack/react-query";
-import getCommentsByBookId from "../../apis/queryFn/getCommentsByBookId";
 import CommentList from "./CommentList";
-import getCommentInfoByBookId from "../../apis/queryFn/getCommentsByBookId";
+import getCommentInfoByBookId from "../../apis/queryfn/getCommentsByBookId";
 import {useNavigate} from "react-router";
 
 

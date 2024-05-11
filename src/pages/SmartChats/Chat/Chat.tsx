@@ -3,7 +3,7 @@ import './Chat.css';
 import userAvatar from '../../../resources/HomeImage/user.png';
 import botAvatar from '../../../resources/HomeImage/gpt.png';
 import {useMutation} from "@tanstack/react-query";
-import getChatResponse from "../../../apis/queryFn/getChatResponse";
+import getChatResponse from '../../../apis/queryfn/getChatResponse';
 
 
 interface Message {
