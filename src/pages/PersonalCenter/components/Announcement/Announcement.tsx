@@ -1,36 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import './Announcement.scss';
 import { Button,Modal,message,Input } from 'antd';
 import { CommentOutlined } from '@ant-design/icons';
-
-type AnnouncementData = {
-  id: number,
-  title: string,
-  content: string,
-  time: string
-}
+import { getAnnouncements } from '../../../../apis/queryfn/announcements';
+import { postConsult } from '../../../../apis/queryfn/consults';
 
 const Announcement: React.FC = () => {
-  const announcementData: AnnouncementData[] = [
-    {
-      id: 1,
-      title: "重要通知",
-      content: "本周五将举行公司年度会议，请务必准时参加。",
-      time: "2024-05-10 09:00"
-    },
-    {
-      id: 2,
-      title: "系统维护公告",
-      content: "系统将于本周末进行维护，维护期间可能会有短暂的服务中断，请留意。",
-      time: "2024-05-12 23:00"
-    },
-    {
-      id: 3,
-      title: "招聘信息",
-      content: "欢迎有经验的前端工程师加入我们的团队，详情请查看公司官网招聘栏目。",
-      time: "2024-05-15 10:00"
-    }
-  ];
+
+  const [announcesmentData,setAnnouncementsData] =useState<announcementType[]>();
+
+  const fetchData = async () => {
+    const res = getAnnouncements();
+    return res;
+  };
+
+  useEffect(() => {
+    fetchData()
+    .then(res => {
+       console.log(res.data); 
+       setAnnouncementsData(res.data)
+    })
+    .catch(error => {
+       message.error("获取失败~")
+    });
+  }, []);
 
   const [modelVisible,setModelVisible] = useState(false);
   const [confirmLoading,setConfirmLoading] = useState(false);
@@ -41,20 +34,31 @@ const Announcement: React.FC = () => {
     setModelVisible(true);
   };
 
-  const handleOk = () => {
+  const handleOk =  async () => {
     if(title==='')
     {
         message.error("请至少输入标题！")
         return;
     }
     setConfirmLoading(true);
-    setTimeout(() => {
+    const res = await postConsult(title,content)
+    console.log(res)
+    if(res.code==20071)
+      {
+      setTimeout(() => {
       setConfirmLoading(false)
       setModelVisible(false)
       setTitle('');
       setContent('');
       message.success('提交成功~');
-    }, 2000);
+      }, 2000);
+      }
+    else{
+      setConfirmLoading(false)
+      setModelVisible(false)
+      message.error("提交失败~")
+    }
+
   };
 
   const handleCancel = () => {
@@ -96,11 +100,11 @@ const Announcement: React.FC = () => {
         <div className='consult'> <Button onClick={showModal} type="primary" icon={<CommentOutlined />} style={{backgroundColor:'bisque', fontSize:'16px'}}>咨询反馈</Button></div>
       </div>
       <ul className="announcement-list">
-        {announcementData.map(announcement => (
+        {announcesmentData?.map(announcement => (
           <li key={announcement.id} className="announcement-item">
             <div className="announcement-title">{announcement.title}</div>
             <div className="announcement-content">{announcement.content}</div>
-            <div className="announcement-time">{announcement.time}</div>
+            <div className="announcement-time">{announcement.publish_time}</div>
           </li>
         ))}
       </ul>
