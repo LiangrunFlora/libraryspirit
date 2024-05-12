@@ -11,7 +11,7 @@ export function getBorrowsHistory(user_id: number):Promise<Result<BookHistoryTyp
   export function deleteBorrowsHistory(id: number):Promise<Result<string>> {
     return http.request({
       method:"DELETE",
-      url: `${API_URLS.borrows}/${id}`
+      url: `${API_URLS.borrowsHistory}/${id}`
     })
   }
   

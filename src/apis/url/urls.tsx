@@ -7,7 +7,7 @@ export const API_URLS = {
   asks:`${BASE_URL}/asks`,
   asksAgree:`${BASE_URL}/asksAgree`,
   asksRefuse:`${BASE_URL}/asksRefuse`,
-  borrows:`${BASE_URL}/borrows`,
+  borrows:`${BASE_URL}/borrowsForUser`,
   borrowsHistory:`${BASE_URL}/borrowsHistory`,
   myResources:`${BASE_URL}/myResources`,
   otherResources:`${BASE_URL}/otherResources`,
