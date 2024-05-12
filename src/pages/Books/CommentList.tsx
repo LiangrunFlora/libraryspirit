@@ -1,11 +1,11 @@
 import * as React from 'react';
 import './CommentList.css'
+import userCover from '../../resources/HomeImage/userCover.png'
 
 
 interface CommentListProps {
   commentInfo:CommentInfo[]
 }
-// todo 将评论内容放入
 const CommentList:React.FC<CommentListProps> = ({commentInfo}) => {
   return (
     <div className="bilibili-comments">
@@ -13,7 +13,7 @@ const CommentList:React.FC<CommentListProps> = ({commentInfo}) => {
         {commentInfo.map((comment, index) => (
           <li key={index} className="comment-item">
             <div className="user-info">
-              <img src={comment.user_cover} alt="avatar" className="avatar"/>
+              <img src={userCover} alt="avatar" className="avatar"/>
               <span className="user-name">{comment.user_name}</span>
             </div>
             <div className="comment-content">{comment.content}</div>

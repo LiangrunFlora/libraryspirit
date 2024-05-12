@@ -2,50 +2,30 @@ import React,{ useState ,useEffect} from 'react';
 import { Table, Tag, Space, Button, Popconfirm, Card,message } from 'antd';
 import { EditOutlined, ClockCircleOutlined,CloseOutlined } from '@ant-design/icons';
 import './OtherResources.scss'
-
-type TableData ={
-  book_id:number,
-  book_name:string,
-  borrow_date:string,
-  is_agree:number
-}
-
-const tableData = [
-    {
-      "book_id": 6,
-      "book_name": "The Catcher in the Rye",
-      "borrow_date": "2024-05-04",
-      "is_agree": 0
-    },
-    {
-      "book_id": 7,
-      "book_name": "To Kill a Mockingbird",
-      "borrow_date": "2024-05-03",
-      "is_agree": 1
-    },
-    {
-      "book_id": 8,
-      "book_name": "The Hobbit",
-      "borrow_date": "2024-05-02",
-      "is_agree": 0
-    },
-    {
-      "book_id": 9,
-      "book_name": "The Lord of the Rings",
-      "borrow_date": "2024-05-01",
-      "is_agree": 1
-    },
-    {
-      "book_id": 10,
-      "book_name": "The Da Vinci Code",
-      "borrow_date": "2024-04-30",
-      "is_agree": 0
-    }
-  ]
+import { getUserInfoFromSession } from '../../../../util/userInfo';
+import {deleteOtherResources, getOtherResources, returnOtherResources} from "../../../../apis/queryFn/otherResources";
 
 const OtherResources:React.FC = () => {
 
-const [circulateData, setCirculateData] = useState<TableData[]>(tableData);
+const [otherResourcesData, setOtherResourcesData] = useState<otherResourcesType[]>();
+
+const fetchData = async () => {
+  const userId = getUserInfoFromSession()?.user_id || 1;
+  const res = await getOtherResources(userId)
+  return res;
+};
+
+useEffect(() => {
+  fetchData()
+  .then(res => {
+     console.log(res.data); 
+     setOtherResourcesData(res.data)
+  })
+  .catch(error => {
+     message.error("获取失败~")
+  });
+}, []);
+
 
   const status = {
     0: <Tag color='volcano'>等待中！</Tag>,
@@ -62,6 +42,10 @@ const [circulateData, setCirculateData] = useState<TableData[]>(tableData);
         dataIndex: 'book_name'
       },
       {
+        title:'借出人',
+        dataIndex:'lender_name'
+      },
+      {
         title: '借出时间',
         dataIndex: 'borrow_date'
       },
@@ -72,7 +56,7 @@ const [circulateData, setCirculateData] = useState<TableData[]>(tableData);
       },
       {
         title: '操作',
-        render: (record: TableData) => (
+        render: (record: otherResourcesType) => (
           <Space size="middle">
           {record.is_agree == 0 && (<Popconfirm
               title="取消申请"
@@ -126,23 +110,37 @@ const [circulateData, setCirculateData] = useState<TableData[]>(tableData);
       }
   ]
 
-  const handleReturn = (record:TableData) => {
-
+  const handleReturn = async (record:otherResourcesType) => {
+    const res = await returnOtherResources(record.id)
+    if(res.code===20053){
+      setOtherResourcesData(otherResourcesData?.filter(item=>item.id!=record.id))
+      message.success("还书成功~")
+    }
+    else{
+      message.error("出错了~")
+    }
   };
 
-  const handleExtention = (record:TableData) => {
-
+  const handleExtention = (record:otherResourcesType) => {
+    message.success("申请延时发送成功~")
   };
 
-  const handleCancle = (record:TableData)=>{
-
+  const handleCancle = async (record:otherResourcesType)=>{
+    const res = await deleteOtherResources(record.id)
+    if(res.code===20052){
+      setOtherResourcesData(otherResourcesData?.filter(item => item.id!=record.id))
+      message.success("取消成功~")
+    }
+    else{
+      message.error("出错了~")
+    }
   }
 
 
   return (
     <div>
-      <Card title={`您目前还有他人的${ tableData.filter(item => item.is_agree !== 0).length}本书未归还`}>
-        <Table rowKey={'book_id'} columns={columns} dataSource={circulateData} />
+      <Card title={`您目前还有${ otherResourcesData?.filter(item => item.is_agree !== 0).length}本书未归还`}>
+        <Table rowKey={'id'} columns={columns} dataSource={otherResourcesData} />
       </Card>
     </div>
   );

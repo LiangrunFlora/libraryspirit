@@ -17,9 +17,7 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from '@mui/icons-material/Close';
 import Box from "@mui/material/Box";
 import {useMutation} from "@tanstack/react-query";
-import getCommentsByBookId from "../../apis/queryFn/getCommentsByBookId";
 import CommentList from "./CommentList";
-import getCommentInfoByBookId from "../../apis/queryFn/getCommentsByBookId";
 import {useNavigate} from "react-router";
 import getUserBorrows from "../../apis/queryFn/getUserBorrows";
 import {getUserInfoFromSession} from "../../util/userInfo";
@@ -28,6 +26,7 @@ import QRCodeComponent from "../../components/Header/QRCode";
 import postBorrows from "../../apis/queryFn/postBorrows";
 import {ImageButton} from "../SmartService/MenuService";
 import audioBookService from "../../resources/HomeImage/audioBookService.png";
+import getCommentInfoByBookId from "../../apis/queryFn/getCommentsByBookId";
 
 const image = {
   url: audioBookService,
@@ -135,6 +134,7 @@ const BookDetails = () => {
   const [isBorrowAvailable, setIsBorrowAvailable] = useState(true)
   const [isLogin, setIsLogin] = useState(true)
   const [QRCodeOpen, setQRCodeOpen] = useState(false)
+  const [isHovered, setIsHovered] = useState(false);
 
   const {mutate:getBookComments} = useMutation({
     mutationFn:getCommentInfoByBookId,
@@ -265,9 +265,17 @@ const BookDetails = () => {
     setReadOpen(false)
   }
 
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
   // 获取位置信息
   const handleLocationClick = () => {
-    navigate(`/smartServices`);
+    navigate(`/smartServices/mapService`);
   }
 
   // 进入界面即加载评论，且只加载一次
@@ -281,7 +289,7 @@ const BookDetails = () => {
         <Box sx={{paddingTop: 3, paddingLeft: 3}}>
           <div role="presentation" onClick={handleClick}>
             <Breadcrumbs aria-label="breadcrumb">
-              <Link to="/home" style={{ color: 'grey' }}>
+              <Link to="/" style={{ color: 'grey' }}>
                 首页
               </Link>
               <Link
@@ -311,6 +319,13 @@ const BookDetails = () => {
                   src={`${bookDetailData.cover}?w=164&h=164&fit=crop&auto=format`}
                   alt={bookDetailData.book_name}
                   loading="lazy"
+                  style={{
+                    width: isHovered ? '300px' : '200px', // 鼠标悬停时宽度变为300px
+                    height: 'auto', // 高度自适应
+                    transition: 'width 0.3s ease', // 添加过渡效果
+                  }}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
                 />
               </Grid>
               <Grid item xs={4}>
